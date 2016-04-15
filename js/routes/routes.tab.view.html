@@ -1,6 +1,14 @@
 <ion-view title="Routes Tab" id="page2">
     <ion-content padding="true" class="has-header">
         <form class="list"></form>
+        <p class="temp-suffix move-right" style="display:inline-block">{{tempDescription}}</p><br/>
+        <div>
+          <div class="temp move-right">{{temperature}}
+            <div class="temp-suffix move-right">&deg;F</div>
+          </div>
+
+        </div>
+      <p id="iconTemp" class="wi move-right"></p><br/>
         <h4 id="routesTab-heading3" style="color:#000000;">From Home To Work</h4>
         <button id="routesTab-button5" class="button button-positive  button-block icon ion-arrow-swap">Switch</button>
         <h4 id="routesTab-heading5" style="color:#000000;">Fastest Routes</h4>
