@@ -5,7 +5,7 @@
         <form class="list">
             <label class="item item-input">
                 <span class="input-label">Address 1</span>
-                <input type="text" placeholder="" ng-model="address1" ng-change="address1ChangeHandler()">
+                <input type="text" placeholder="" ng-model="setup.address1" ng-blur="address1ChangeHandler()">
             </label>
         </form>
         <div class="spacer" style="width: 283px; height: 21px;"></div>
@@ -13,12 +13,12 @@
         <form class="list">
             <label class="item item-input">
                 <span class="input-label">Address 2</span>
-                <input type="text" placeholder="" ng-model="address2" ng-change="address2ChangeHandler()">
+                <input type="text" placeholder="" ng-model="setup.address2" ng-blur="address2ChangeHandler()">
             </label>
         </form>
         <div class="button-bar"></div>
         <form class="list">
-            <ion-toggle toggle-class="toggle-positive" ng-model="pushNotifications" ng-change="pushNotificationsClickHandler()">Push Notifications</ion-toggle>
+            <ion-toggle toggle-class="toggle-positive" ng-model="setup.pushNotifications" ng-change="pushNotificationsClickHandler()">Push Notifications</ion-toggle>
         </form>
     </ion-content>
 </ion-view>

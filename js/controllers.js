@@ -9,11 +9,14 @@ angular.module('app.controllers', [])
 })
 
 .controller('settingsTabCtrl', function($scope) {
-  var setup = JSON.parse(window.localStorage.getItem("setup"));
+$scope.setup = JSON.parse(window.localStorage.getItem("setup"));
+if($scope.setup === null) {
+  $scope.setup = {};
+  $scope.setup.address1 = $scope.setup.address2 = '';
+  $scope.setup.pushNotifications = true;
+}
+$scope.masterSetup = angular.copy($scope.setup);
 
-$scope.address1 = setup.address1,
-$scope.address2 = setup.address2`,
-$scope.pushNotifications = setup.pushNotifications;
 
 $scope.address1ChangeHandler = function() {
 saveSetupInformation();
@@ -23,15 +26,11 @@ $scope.address2ChangeHandler = function() {
 saveSetupInformation();
 };
 
-$scope.pushNotifications = function() {
+$scope.pushNotificationsClickHandler = function() {
 saveSetupInformation();
 };
 
 var saveSetupInformation = function() {
-  var setup = {};
-  setup.address1 = $scope.address1;
-  setup.address2 = $scope.address2;
-  setup.pushNotifications = $scope.pushNotifications;
-  window.localStorage.setItem("setup", JSON.stringify(setup));
+  window.localStorage.setItem("setup", JSON.stringify($scope.setup));
 };
 })
