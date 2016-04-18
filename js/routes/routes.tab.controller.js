@@ -3,10 +3,12 @@
 
   angular.module('app').controller("RoutesTabController", RoutesTabController);
 
-  RoutesTabController.$inject = ["$scope", "$log", "$http", "$timeout"];
+  RoutesTabController.$inject = ["$rootScope", "$scope", "$log", "$http", "$timeout"];
 
-  function RoutesTabController($scope, $log, $http, $timeout) {
+  function RoutesTabController($rootScope, $scope, $log, $http, $timeout) {
     $scope.temperature = '';
+    var origin = $scope.address1 = $rootScope.setup.address1;
+    var destination = $scope.address2 = $rootScope.setup.address2;
 
 $scope.iconClass = "wi-night-clear";
     function setWeatherIcon(actualId, sunrise, sunset) {
@@ -88,34 +90,47 @@ $scope.iconClass = "wi-night-clear";
       return $scope.iconClass;
     }
 
-    var getDirections = function() {
-      var apiKey = 'AIzaSyBwL30VtxlKAORx7xc6Hr8kJRzIRl9Drqs';
-      var url = 'https://maps.googleapis.com/maps/api/directions/json?parameters';
-      var address1 = '3630 Sterling Magnolia Ct S, Charlotte, NC 28211';
-      var address2 = '831 E Morehead St, Charlotte, NC 28211';
-      var params = {
-        key : apiKey,
-        origin : address1,
-        destination : address2,
-        alternatives : true
-      };
-
-      $http(
-        method : 'GET',
-        url : url, {
-          params: params
+    var getDirections = function(origin, destination) {
+        var directionsService = new google.maps.DirectionsService;
+        directionsService.route({
+          origin : origin,
+          destination : destination,
+          travelMode : google.maps.TravelMode.DRIVING,
+          provideRouteAlternatives : true
+        }, function(response, status) {
+          if(status === google.maps.DirectionsStatus.OK) {
+            $log.log("Successfully retrieved directions");
+            $scope.listOfRoutes = response.routes;
+            $scope.listOfRoutes.sort(function(a, b) {
+              if(parseInt(a.legs[0].duration.text) > parseInt(b.legs[0].duration.text)) {
+                return 1;
+              }
+              if(parseInt(a.legs[0].duration.text) < parseInt(b.legs[0].duration.text)) {
+                return -1;
+              }
+              return 0;
+            });
+            $scope.$apply();
+          } else {
+            $log.log("Error in retrieving directions");
+          }
         })
-        .success(function(data, status, headers, config) {
-          $log.log("success : Maps");
+    };
 
-        })
-        .error(function(data, status, headers, config) {
-          $log.log("errors : Maps");
-        });
+    $scope.switchDirections = function() {
+      if(origin == $scope.address1 && destination === $scope.address2) {
+        origin = $scope.address2;
+        destination = $scope.address1;
+      }
+      else if(origin == $scope.address2 && destination === $scope.address1) {
+        origin = $scope.address1;
+        destination = $scope.address2;
+      }
+      getDirections(origin, destination);
     };
 
     getWeather();
-    getDirections();
+    getDirections(origin, destination);
   }
 
 }());

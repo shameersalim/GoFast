@@ -3,9 +3,9 @@
 
 angular.module('app').controller("SetupTabController", SetupTabController);
 
-SetupTabController.$inject = ["$scope"];
-function  SetupTabController($scope) {
-  $scope.setup = JSON.parse(window.localStorage.getItem("setup"));
+SetupTabController.$inject = ["$rootScope", "$scope"];
+function  SetupTabController($rootScope, $scope) {
+  $rootScope.setup = $scope.setup = JSON.parse(window.localStorage.getItem("setup"));
   if($scope.setup === null) {
     $scope.setup = {};
     $scope.setup.address1 = $scope.setup.address2 = '';
