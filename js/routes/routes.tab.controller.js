@@ -7,6 +7,16 @@
 
   function RoutesTabController($rootScope, $scope, $log, $http, $timeout) {
     $scope.temperature = '';
+    if($rootScope.setup === null || angular.isUndefined($rootScope.setup)) {
+      $rootScope.setup = {};
+      $rootScope.setup.address1 = $rootScope.setup.address2 = '';
+    }
+    if($rootScope.setup.address1 === null || angular.isUndefined($rootScope.setup.address1)) {
+      $rootScope.setup.address1 = '';
+    }
+    if($rootScope.setup.address2 === null || angular.isUndefined($rootScope.setup.address2)) {
+      $rootScope.setup.address2 = '';
+    }
     var origin = $scope.address1 = $rootScope.setup.address1;
     var destination = $scope.address2 = $rootScope.setup.address2;
 
